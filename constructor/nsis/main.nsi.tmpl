@@ -28,6 +28,7 @@ Unicode "true"
 !define PY_VER __PY_VER__
 !define PYVERSION_JUSTDIGITS __PYVERSION_JUSTDIGITS__
 !define PYVERSION __PYVERSION__
+!define PYDIST_FILENAME __PYDIST_FILENAME__
 !define DEFAULT_PREFIX __DEFAULT_PREFIX__
 !define POST_INSTALL_DESC __POST_INSTALL_DESC__
 !define PRODUCT_NAME "${NAME} ${VERSION} (${ARCH})"
@@ -799,12 +800,13 @@ Section "Install"
     File __PRE_UNINSTALL__
     File /nonfatal /r __INDEX_CACHE__
     File /r __REPODATA_RECORD__
-
+    
     @PKG_COMMANDS@
 
     # Cleanup
-    Delete "$INSTDIR\pkgs\env.txt"
-
+    #Delete "$INSTDIR\pkgs\env.txt"
+    
+ 
     @WRITE_CONDARC@
 
     AddSize @SIZE@
@@ -826,16 +828,16 @@ Section "Install"
     ${If} $Ana_NoScripts_State = ${BST_UNCHECKED}
         DetailPrint "Running post install (post_install.bat)..."
         #push '"$INSTDIR\pythonw.exe" -E -s "$INSTDIR\Lib\_nsis.py" "$INSTDIR\pkgs\post_install.bat"'
-        push '"$INSTDIR\pkgs\post_install.bat" "$INSTDIR"'
+        push '"$INSTDIR\pkgs\post_install.bat" $INSTDIR ${PYDIST_FILENAME}'
         push 'Failed to run post install script'
         call AbortRetryExecWait
     ${EndIf}
 
-    ${If} $Ana_AddToPath_State = ${BST_CHECKED}
-        #push '"$INSTDIR\pythonw.exe" -E -s "$INSTDIR\Lib\_nsis.py" addpath ${PYVERSION} ${NAME} ${VERSION} ${ARCH}'
-        #push 'Failed to add @NAME@ to the system PATH'
-        #call AbortRetryExecWait
-    ${EndIf}
+    #${If} $Ana_AddToPath_State = ${BST_CHECKED}
+    #    push '"$INSTDIR\pythonw.exe" -E -s "$INSTDIR\Lib\_nsis.py" addpath ${PYVERSION} ${NAME} ${VERSION} ${ARCH}'
+    #    push 'Failed to add @NAME@ to the system PATH'
+    #    call AbortRetryExecWait
+    #${EndIf}
 
 
     # Create registry entries saying this is the system Python

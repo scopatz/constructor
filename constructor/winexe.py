@@ -99,6 +99,7 @@ def make_nsi(info, dir_path):
         'ARCH': '%d-bit' % arch,
         'PY_VER': py_version[:3],
         'PYVERSION': py_version,
+        'PYDIST_FILENAME': filename_dist(dists[0]),
         'PYVERSION_JUSTDIGITS': ''.join(py_version.split('.')),
         'OUTFILE': info['_outpath'],
         'LICENSEFILE': abspath(info.get('license_file',
