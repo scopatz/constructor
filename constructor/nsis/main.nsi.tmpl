@@ -814,26 +814,27 @@ Section "Install"
     SetOutPath "$INSTDIR\conda-meta"
     File __CONDA_HISTORY__
 
-    DetailPrint "Creating @NAME@ menus..."
-    push '"$INSTDIR\_conda.exe" constructor --prefix "$INSTDIR" --make-menus @MENU_PKGS@'
-    push 'Failed to create menus'
-    call AbortRetryNSExecWait
+    #DetailPrint "Creating @NAME@ menus..."
+    #push '"$INSTDIR\_conda.exe" constructor --prefix "$INSTDIR" --make-menus @MENU_PKGS@'
+    #push 'Failed to create menus'
+    #call AbortRetryNSExecWait
 
-    push '"$INSTDIR\pythonw.exe" -E -s "$INSTDIR\Lib\_nsis.py" mkdirs'
-    push 'Failed to initialize Anaconda directories'
-    call AbortRetryExecWait
+    #push '"$INSTDIR\pythonw.exe" -E -s "$INSTDIR\Lib\_nsis.py" mkdirs'
+    #push 'Failed to initialize Anaconda directories'
+    #call AbortRetryExecWait
 
     ${If} $Ana_NoScripts_State = ${BST_UNCHECKED}
-        DetailPrint "Running post install..."
-        push '"$INSTDIR\pythonw.exe" -E -s "$INSTDIR\Lib\_nsis.py" post_install'
+        DetailPrint "Running post install (post_install.bat)..."
+        #push '"$INSTDIR\pythonw.exe" -E -s "$INSTDIR\Lib\_nsis.py" "$INSTDIR\pkgs\post_install.bat"'
+        push '"$INSTDIR\pkgs\post_install.bat" "$INSTDIR"'
         push 'Failed to run post install script'
         call AbortRetryExecWait
     ${EndIf}
 
     ${If} $Ana_AddToPath_State = ${BST_CHECKED}
-        push '"$INSTDIR\pythonw.exe" -E -s "$INSTDIR\Lib\_nsis.py" addpath ${PYVERSION} ${NAME} ${VERSION} ${ARCH}'
-        push 'Failed to add @NAME@ to the system PATH'
-        call AbortRetryExecWait
+        #push '"$INSTDIR\pythonw.exe" -E -s "$INSTDIR\Lib\_nsis.py" addpath ${PYVERSION} ${NAME} ${VERSION} ${ARCH}'
+        #push 'Failed to add @NAME@ to the system PATH'
+        #call AbortRetryExecWait
     ${EndIf}
 
 
